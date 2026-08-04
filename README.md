@@ -13,13 +13,13 @@ Can be done with the following command in Terminal after you have
 cloned the repo.
 
 ```bash
-python3 -m pip install -e lumen-ab/
+python3 -m pip install -e ab-testing/
 ```
 
 and then in python it will be as simple as:
 
 ```python
-from lumantic_ab import t_test_summary
+from ab_testing import t_test_summary
 ```
 
 
