@@ -1,4 +1,4 @@
-# Lumantic-AB Package
+# AB-Testing Package
 
 This is an open-source AB-testing package that will provide both
 Frequentist and Bayesian methodologies. We will be building it
