@@ -12,7 +12,7 @@ from scipy import stats
 from .results import TTestResult
 
 # Define the Function
-def t_test_continous(
+def t_test_continuous(
     df,
     metric="conversion_rate",
     assignment_col="assignment",
