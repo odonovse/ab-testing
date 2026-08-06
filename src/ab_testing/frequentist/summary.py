@@ -1,7 +1,9 @@
 """
-Welch's t-test on arm-level summary statistics, ported from
-pass-lab-ltd/lumantic-ab/documentation/testing/2026-07-31 Basic T-Test Functions.ipynb
-(validated there against scipy.stats.ttest_ind(equal_var=False) on real data).
+Welch's t-test on pre-aggregated, arm-level summary statistics.
+For now we have assumed 2-groups (A/B), with a boolean
+assignment column and one row per metric-arm. This function
+should be used when the data has already been aggregated,
+rather than provided in a unit-level format.
 """
 
 # Import Necessary Packages
@@ -21,9 +23,9 @@ def t_test_summary(
     var_col="var",
 ):
     """
-    Same Welch's t-test as t_test_summary, but operating on pre-aggregated 
-    summary statistics (one row per metric-arm) instead of raw unit-level rows. 
-    It requires the following arguements:
+    This is a basic Welch's t-test function that takes pre-aggregated
+    summary statistics (one row per metric-arm) rather than raw
+    unit-level rows. It needs the following arguements:
 
     df: A dataframe with one row per metric-arm, containing at least the
                 columns named by metric_col, assignment, n_col, mean_col, var_col.
