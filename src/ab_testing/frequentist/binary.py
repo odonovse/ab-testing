@@ -51,6 +51,8 @@ def t_test_binary(
         raise KeyError(f"df is missing required column(s): {missing}")
     if not 0 < alpha < 1:
         raise ValueError(f"Alpha must be between 0 and 1, got {alpha}")
+    if not np.isfinite(df[metric]).all():
+        raise ValueError(f"{metric!r} has NaN or infinite values in the Sample.")
     if not np.isin(df[metric], (0.0, 1.0)).all():
         raise ValueError(f"{metric!r} must be binary (0/1)")
     if df[assignment_col].dtype != 'bool':
@@ -58,8 +60,7 @@ def t_test_binary(
             f"{assignment_col!r} must be a boolean column;" 
             f"got dtype {df[assignment_col].dtype}"
         )
-    if not np.isfinite(df[metric]).all():
-        raise ValueError(f"{metric!r} has NaN or infinite values in the Sample.")
+
 
     # Split the Datasets by Assignment
     treatment_values = df.loc[df[assignment_col], metric].to_numpy(dtype=float)
