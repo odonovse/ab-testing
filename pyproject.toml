@@ -7,7 +7,7 @@ requires-python = ">=3.11"
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 authors = [{ name = "Séamus O'Donovan", email = "odonovse@tcd.ie" }]
-keywords = ["ab-testing", "experimentation", "statistics", "frequentist", "bayesian", "t-test", "CUPED", "SRM", "Winsorisation", "Fixed Effects"]
+keywords = ["ab-testing", "experimentation", "statistics", "frequentist", "bayesian", "t-test", "cuped", "srm", "winsorisation", "fixed effects", "welch"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
