@@ -56,5 +56,9 @@ def test_unknown_metric_raises(summary_df):
 
 
 def test_missing_column_raises(summary_df):
-    with pytest.raises(KeyError):
+    """
+    Match the message: without it this passes even when the up-front column
+    check is removed, because pandas raises its own KeyError further down.
+    """
+    with pytest.raises(KeyError, match="missing required column"):
         t_test_summary(summary_df.drop(columns=["var"]), metric="revenue")

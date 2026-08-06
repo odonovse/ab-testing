@@ -128,3 +128,25 @@ def test_zero_control_mean_raises():
     )
     with pytest.raises(ValueError, match="relative effects undefined"):
         t_test_continuous(df, metric="revenue")
+
+
+def test_non_boolean_assignment_raises(continuous_df):
+    """0/1 ints are not booleans — reject rather than guess the encoding."""
+    df = continuous_df.assign(assignment=continuous_df["assignment"].astype(int))
+    with pytest.raises(ValueError, match="boolean"):
+        t_test_continuous(df, metric="revenue")
+
+
+def test_nan_in_metric_raises():
+    """
+    Unlike the binary path, this guard is reachable here: a NaN is a
+    perfectly plausible continuous value until you check for it.
+    """
+    df = pd.DataFrame(
+        {
+            "assignment": [True] * 3 + [False] * 3,
+            "revenue": [1.0, 2.0, np.nan, 4.0, 5.0, 6.0],
+        }
+    )
+    with pytest.raises(ValueError, match="NaN or infinite"):
+        t_test_continuous(df, metric="revenue")

@@ -36,17 +36,22 @@ def test_absolute_ci_matches_scipy(binary_df, binary_arms):
 # --- The identity the binary path leans on ----------------------------------
 
 
-def test_closed_form_variance_equals_sample_variance(binary_arms):
+def test_se_uses_the_closed_form_variance(binary_df, binary_arms):
     """
     For a 0/1 variable, p(1-p)*n/(n-1) is exactly the ddof=1 sample variance.
-    binary.py uses the closed form rather than calling .var(), so pin the
-    equivalence rather than trusting it.
+    binary.py uses the closed form rather than calling .var(), so check the
+    standard error it actually produces against the ddof=1 route.
+
+    Asserting the identity on its own would only be testing numpy — it has to
+    go through t_test_binary to protect this package.
     """
-    for arm in binary_arms:
-        n = arm.size
-        p = arm.mean()
-        closed_form = (p * (1 - p) * n) / (n - 1)
-        assert closed_form == pytest.approx(arm.var(ddof=1), rel=1e-12)
+    treatment, control = binary_arms
+    got = t_test_binary(binary_df, metric="converted")
+
+    expected_se = np.sqrt(
+        treatment.var(ddof=1) / treatment.size + control.var(ddof=1) / control.size
+    )
+    assert got.se == pytest.approx(expected_se, rel=1e-12)
 
 
 def test_proportions_are_recovered(binary_df, binary_arms):
@@ -79,12 +84,18 @@ def test_non_boolean_assignment_raises(binary_df):
         t_test_binary(df, metric="converted")
 
 
-def test_nan_in_metric_raises():
+def test_nan_is_rejected_by_the_binary_check():
+    """
+    A NaN is rejected, but by the 0/1 check rather than the isfinite one —
+    np.isin(nan, (0, 1)) is already False. binary.py's isfinite guard is
+    therefore unreachable. Match on the message so this test cannot silently
+    start passing for a different reason than it claims.
+    """
     df = pd.DataFrame(
         {
             "assignment": [True] * 3 + [False] * 3,
             "converted": [0.0, 1.0, np.nan, 1.0, 0.0, 1.0],
         }
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="must be binary"):
         t_test_binary(df, metric="converted")
