@@ -1,13 +1,13 @@
 [project]
 name = "ab-testing"
 version = "0.1.0"
-description = "Frequentist and Bayesian A/B testing over raw or summary inputs."
+description = "AB-Testing Package with Frequentist and Bayesian Methodologies, including SRM checks, CUPED adjustments, Winsorisation"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 authors = [{ name = "Séamus O'Donovan", email = "odonovse@tcd.ie" }]
-keywords = ["ab-testing", "experimentation", "statistics", "frequentist", "bayesian"]
+keywords = ["ab-testing", "experimentation", "statistics", "frequentist", "bayesian", "t-test", "CUPED", "SRM", "Winsorisation", "Fixed Effects"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -15,7 +15,6 @@ classifiers = [
     "Intended Audience :: Information Technology",
     "Intended Audience :: Education",
     "Programming Language :: Python :: 3.11",
-    "Topic :: Documentation",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Information Analysis",
