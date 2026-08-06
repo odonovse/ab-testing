@@ -3,7 +3,7 @@ name = "ab-testing"
 version = "0.1.0"
 description = "Frequentist and Bayesian A/B testing over raw or summary inputs."
 requires-python = ">=3.11"
-license = "BSD-2-Clause"
+license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 dependencies = [
     "numpy>=1.26",
