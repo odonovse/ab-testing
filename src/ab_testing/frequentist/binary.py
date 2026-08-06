@@ -1,9 +1,9 @@
 """
 Welch's t-test on raw, unit-level rows for a binary metric.
-For now we have assumed 2-groups (A/B) of equal size (50:50),
-with a boolean assignment column and (in this function) a 
-binary metric. This function should be used when the data
-is provided in a unit-level format.
+For now we have assumed 2-groups (A/B), with a boolean
+assignment column and (in this function) a binary metric.
+This function should be used when the data is provided in
+a unit-level format.
 """
 
 # Import Necessary Packages
@@ -20,9 +20,9 @@ def t_test_binary(
 ):
 
     """
-    This is a basic Welch's t-test function that takes raw unit-level data 
-    with two groups of equal size, and a binary metric of interest. It needs
-    the following arguements:
+    This is a basic Welch's t-test function that takes raw unit-level data
+    with two groups, and a binary metric of interest. It needs the
+    following arguements:
 
     df: A dataframe with one row per metric-arm, containing at least the
                 columns named by metric_col and assignment

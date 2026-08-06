@@ -13,13 +13,13 @@ Can be done with the following command in Terminal after you have
 cloned the repo.
 
 ```bash
-python3 -m pip install -e ab-testing/
+python3 -m pip install -e .
 ```
 
 and then in python it will be as simple as:
 
 ```python
-from ab_testing import t_test_summary
+from ab_testing.frequentist import t_test_summary
 ```
 
 
@@ -31,7 +31,6 @@ for a Welch's T-test (*so we allow unequal variances across groups*),
 with the following assumptions built in:
 
 - there are only two-groups (classic AB test)
-- the groups have equal sizes (50:50 split)
 - the assignment column is boolean (*true = treatment, false =*
   *control*)
 
