@@ -84,17 +84,28 @@ def test_non_boolean_assignment_raises(binary_df):
         t_test_binary(df, metric="converted")
 
 
-def test_nan_is_rejected_by_the_binary_check():
+def test_nan_in_metric_raises():
     """
-    A NaN is rejected, but by the 0/1 check rather than the isfinite one —
-    np.isin(nan, (0, 1)) is already False. binary.py's isfinite guard is
-    therefore unreachable. Match on the message so this test cannot silently
-    start passing for a different reason than it claims.
+    A NaN must be reported as missing data, not as a bad encoding. Match on
+    the message: if the isfinite check ever moves back below the 0/1 check it
+    becomes unreachable, and this test is what notices.
     """
     df = pd.DataFrame(
         {
             "assignment": [True] * 3 + [False] * 3,
             "converted": [0.0, 1.0, np.nan, 1.0, 0.0, 1.0],
+        }
+    )
+    with pytest.raises(ValueError, match="NaN or infinite"):
+        t_test_binary(df, metric="converted")
+
+
+def test_non_binary_values_still_raise_the_binary_error():
+    """Finite but non-binary values must still be caught by the 0/1 check."""
+    df = pd.DataFrame(
+        {
+            "assignment": [True] * 3 + [False] * 3,
+            "converted": [0.0, 1.0, 0.5, 1.0, 0.0, 1.0],
         }
     )
     with pytest.raises(ValueError, match="must be binary"):

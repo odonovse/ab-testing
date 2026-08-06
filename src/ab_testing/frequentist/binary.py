@@ -51,15 +51,19 @@ def t_test_binary(
         raise KeyError(f"df is missing required column(s): {missing}")
     if not 0 < alpha < 1:
         raise ValueError(f"Alpha must be between 0 and 1, got {alpha}")
+    # Missing data is checked before the 0/1 check, not after: np.isin(nan,
+    # (0.0, 1.0)) is already False, so a later isfinite check can never fire
+    # and a NaN would be reported as "not binary" — which sends you looking
+    # at the encoding rather than at the gap in the data.
+    if not np.isfinite(df[metric]).all():
+        raise ValueError(f"{metric!r} has NaN or infinite values in the Sample.")
     if not np.isin(df[metric], (0.0, 1.0)).all():
         raise ValueError(f"{metric!r} must be binary (0/1)")
     if df[assignment_col].dtype != 'bool':
         raise ValueError(
-            f"{assignment_col!r} must be a boolean column;" 
+            f"{assignment_col!r} must be a boolean column;"
             f"got dtype {df[assignment_col].dtype}"
         )
-    if not np.isfinite(df[metric]).all():
-        raise ValueError(f"{metric!r} has NaN or infinite values in the Sample.")
 
     # Split the Datasets by Assignment
     treatment_values = df.loc[df[assignment_col], metric].to_numpy(dtype=float)
