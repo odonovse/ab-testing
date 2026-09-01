@@ -25,6 +25,9 @@ dependencies = [
     "scipy>=1.11",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
 [project.urls]
 Homepage = "https://github.com/odonovse/ab-testing"
 Source = "https://github.com/odonovse/ab-testing"
@@ -36,3 +39,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ab_testing"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
